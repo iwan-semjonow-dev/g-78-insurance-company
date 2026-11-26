@@ -48,7 +48,7 @@ export class UsersService {
     const user: User | null = await this.repository.findById(id);
 
     if (!user || !user.active) {
-      throw new EntityNotFoundException("User", id);
+      throw new EntityNotFoundException('User', id);
     }
 
     return user;
@@ -75,16 +75,20 @@ export class UsersService {
   }
 
   async restoreById(id: number): Promise<void> {
-    const user: User = await this.getActiveEntityById(id);
-    user.active = true;
-    await this.repository.save(user);
+    const user: User | null = await this.repository.findById(id);
+    if (user) {
+      user.active = true;
+      await this.repository.save(user);
+    }
   }
 
   async setRole(id: number, role: Role): Promise<void> {
     const user: User = await this.getActiveEntityById(id);
 
-    if (user.role === role){
-      throw new EntityUpdateException(`User with id ${id} already has role ${role}`)
+    if (user.role === role) {
+      throw new EntityUpdateException(
+        `User with id ${id} already has role ${role}`,
+      );
     }
 
     user.role = role;

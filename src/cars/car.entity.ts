@@ -22,7 +22,7 @@ export class Car {
   @Column({ name: 'color', nullable: false, unique: false })
   color: string;
 
-  @ManyToOne((): typeof User => User, { nullable: false })
+  @ManyToOne((): typeof User => User, { nullable: true })
   owner: User;
 
   @Column({ name: 'active', nullable: false, unique: false, default: true })
